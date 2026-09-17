@@ -4,23 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Quiz & Blog Preview</title>
+  <title>QuizBlog</title>
 
   <style>
-    /* =========================
-       ROOT
-    ========================= */
+    /* =========================================
+       ROOT VARIABLES
+    ========================================= */
 
     :root {
       --bg: #f6f7fb;
-      --card: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f8f8fc;
+
       --text: #171821;
       --muted: #777b89;
+
       --border: #e7e8ef;
 
-      --primary: #4f46e5;
-      --primary-dark: #4338ca;
-      --primary-light: #eeedff;
+      --primary: #5146e5;
+      --primary-hover: #4338ca;
+      --primary-soft: #eeedff;
 
       --success: #16a34a;
       --success-bg: #ecfdf3;
@@ -28,38 +31,51 @@
       --danger: #dc2626;
       --danger-bg: #fef2f2;
 
-      --radius-lg: 24px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
+      --warning: #f59e0b;
+      --warning-bg: #fff7e6;
+
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 15px;
+      --radius-sm: 11px;
 
       --shadow:
-        0 20px 50px rgba(25, 25, 50, 0.08);
+        0 25px 70px rgba(20, 20, 45, 0.08);
+
+      --transition: 0.25s ease;
     }
 
-    /* DARK THEME */
+
+    /* =========================================
+       DARK MODE
+    ========================================= */
 
     body.dark {
-      --bg: #0f1015;
-      --card: #181920;
-      --text: #f5f5f7;
-      --muted: #999daa;
-      --border: #292b35;
+      --bg: #0e0f14;
+      --surface: #17181f;
+      --surface-2: #1d1e27;
 
-      --primary: #7770ff;
-      --primary-dark: #665ef0;
-      --primary-light: #242342;
+      --text: #f6f6f8;
+      --muted: #9b9daa;
 
-      --success-bg: #12251a;
-      --danger-bg: #2a1517;
+      --border: #2b2d38;
+
+      --primary: #756cff;
+      --primary-hover: #665df0;
+      --primary-soft: #272548;
+
+      --success-bg: #10241a;
+      --danger-bg: #291618;
+      --warning-bg: #2b2313;
 
       --shadow:
-        0 20px 50px rgba(0, 0, 0, 0.3);
+        0 25px 70px rgba(0, 0, 0, 0.35);
     }
 
 
-    /* =========================
+    /* =========================================
        RESET
-    ========================= */
+    ========================================= */
 
     * {
       margin: 0;
@@ -70,6 +86,9 @@
     body {
       min-height: 100vh;
 
+      background: var(--bg);
+      color: var(--text);
+
       font-family:
         Inter,
         system-ui,
@@ -78,14 +97,11 @@
         "Segoe UI",
         sans-serif;
 
-      background: var(--bg);
-      color: var(--text);
+      padding: 30px 16px;
 
       transition:
-        background 0.3s ease,
-        color 0.3s ease;
-
-      padding: 40px 20px;
+        background var(--transition),
+        color var(--transition);
     }
 
     button {
@@ -93,9 +109,9 @@
     }
 
 
-    /* =========================
+    /* =========================================
        APP
-    ========================= */
+    ========================================= */
 
     .app {
       width: min(900px, 100%);
@@ -103,157 +119,229 @@
     }
 
 
-    /* =========================
+    /* =========================================
        HEADER
-    ========================= */
+    ========================================= */
 
     .header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
 
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
       gap: 10px;
 
       font-size: 18px;
-      font-weight: 800;
+      font-weight: 850;
       letter-spacing: -0.5px;
     }
 
-    .logo-icon {
+    .brand-icon {
       width: 38px;
       height: 38px;
 
       display: grid;
       place-items: center;
 
-      border-radius: 11px;
+      border-radius: 12px;
 
       background: var(--primary);
       color: white;
 
-      font-size: 18px;
+      font-weight: 900;
     }
 
-    .theme-toggle {
+    .theme-btn {
       width: 42px;
       height: 42px;
-
-      border: 1px solid var(--border);
-      border-radius: 50%;
-
-      background: var(--card);
-      color: var(--text);
-
-      cursor: pointer;
 
       display: grid;
       place-items: center;
 
-      transition: 0.2s ease;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+
+      background: var(--surface);
+      color: var(--text);
+
+      cursor: pointer;
+
+      transition: var(--transition);
     }
 
-    .theme-toggle:hover {
-      transform: rotate(10deg);
+    .theme-btn:hover {
       border-color: var(--primary);
+      transform: rotate(8deg);
     }
 
 
-    /* =========================
-       MAIN CARD
-    ========================= */
+    /* =========================================
+       CARD
+    ========================================= */
 
     .card {
-      background: var(--card);
+      background: var(--surface);
 
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
 
-      padding: 36px;
+      border-radius: var(--radius-xl);
+
+      padding: 34px;
 
       box-shadow: var(--shadow);
 
       transition:
-        background 0.3s ease,
-        border 0.3s ease;
+        background var(--transition),
+        border var(--transition);
     }
 
 
-    /* =========================
-       SETUP
-    ========================= */
+    /* =========================================
+       COMMON
+    ========================================= */
 
-    .intro {
+    .eyebrow {
+      color: var(--primary);
+
+      font-size: 11px;
+      font-weight: 850;
+
+      letter-spacing: .13em;
+
+      text-transform: uppercase;
+
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+
+    /* =========================================
+       SETUP
+    ========================================= */
+
+    .setup-header {
       text-align: center;
       max-width: 650px;
       margin: auto;
     }
 
-    .eyebrow {
-      color: var(--primary);
+    .setup-header h1 {
+      font-size: clamp(34px, 7vw, 58px);
 
-      font-size: 12px;
-      font-weight: 800;
+      line-height: .98;
 
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: -3px;
 
-      margin-bottom: 12px;
+      margin-bottom: 17px;
     }
 
-    .intro h1 {
-      font-size: clamp(32px, 6vw, 54px);
-      line-height: 1;
-
-      letter-spacing: -2.5px;
-
-      margin-bottom: 16px;
-    }
-
-    .intro p {
+    .setup-header p {
       color: var(--muted);
 
-      max-width: 520px;
-
-      margin: auto;
-
-      line-height: 1.7;
       font-size: 15px;
+      line-height: 1.7;
     }
 
 
-    /* =========================
-       DIFFICULTY
-    ========================= */
+    /* =========================================
+       CATEGORY
+    ========================================= */
 
-    .difficulty {
+    .section-title {
+      font-size: 13px;
+      font-weight: 800;
+
+      margin: 28px 0 11px;
+    }
+
+    .categories {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
 
-      gap: 12px;
-
-      margin: 30px 0 20px;
+      gap: 10px;
     }
 
-    .difficulty-btn {
-      padding: 18px 12px;
-
+    .category {
       border: 1px solid var(--border);
+
+      background: var(--surface);
+
+      color: var(--text);
+
+      padding: 15px 10px;
+
       border-radius: var(--radius-md);
 
-      background: var(--card);
-      color: var(--text);
+      text-align: center;
 
       cursor: pointer;
 
+      transition: var(--transition);
+    }
+
+    .category:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .category.active {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+    }
+
+    .category-icon {
+      display: block;
+
+      font-size: 22px;
+
+      margin-bottom: 7px;
+    }
+
+    .category-name {
+      display: block;
+
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+
+    /* =========================================
+       DIFFICULTY
+    ========================================= */
+
+    .difficulty {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 10px;
+    }
+
+    .difficulty-btn {
+      border: 1px solid var(--border);
+
+      background: var(--surface);
+
+      color: var(--text);
+
+      padding: 16px;
+
+      border-radius: var(--radius-md);
+
       text-align: left;
 
-      transition: 0.2s ease;
+      cursor: pointer;
+
+      transition: var(--transition);
     }
 
     .difficulty-btn:hover {
@@ -262,57 +350,120 @@
     }
 
     .difficulty-btn.active {
-      background: var(--primary-light);
+      background: var(--primary-soft);
       border-color: var(--primary);
     }
 
     .difficulty-btn strong {
       display: block;
+
+      font-size: 14px;
+
       margin-bottom: 5px;
     }
 
     .difficulty-btn span {
       color: var(--muted);
-      font-size: 12px;
+
+      font-size: 11px;
     }
 
 
-    /* =========================
-       BUTTONS
-    ========================= */
+    /* =========================================
+       START BUTTON
+    ========================================= */
 
     .primary-btn {
       width: 100%;
 
       border: none;
+
       border-radius: var(--radius-sm);
 
       background: var(--primary);
+
       color: white;
 
-      padding: 15px 20px;
+      padding: 15px 18px;
 
-      font-weight: 750;
+      margin-top: 22px;
+
       font-size: 14px;
+      font-weight: 800;
 
       cursor: pointer;
 
-      transition: 0.2s ease;
+      transition: var(--transition);
     }
 
     .primary-btn:hover {
-      background: var(--primary-dark);
+      background: var(--primary-hover);
       transform: translateY(-1px);
     }
 
 
-    /* =========================
-       QUIZ
-    ========================= */
+    /* =========================================
+       QUIZ HEADER
+    ========================================= */
 
-    .quiz-top {
-      margin-bottom: 30px;
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 15px;
+
+      margin-bottom: 20px;
     }
+
+    .quiz-meta {
+      display: flex;
+      align-items: center;
+
+      gap: 8px;
+
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 7px 10px;
+
+      background: var(--primary-soft);
+
+      color: var(--primary);
+
+      border-radius: 999px;
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .timer {
+      min-width: 65px;
+
+      padding: 8px 11px;
+
+      border-radius: 999px;
+
+      background: var(--surface-2);
+
+      border: 1px solid var(--border);
+
+      text-align: center;
+
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .timer.warning {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+
+    /* =========================================
+       PROGRESS
+    ========================================= */
 
     .progress-info {
       display: flex;
@@ -320,9 +471,9 @@
 
       color: var(--muted);
 
-      font-size: 12px;
+      font-size: 11px;
 
-      margin-bottom: 9px;
+      margin-bottom: 8px;
     }
 
     .progress {
@@ -330,7 +481,7 @@
 
       background: var(--border);
 
-      border-radius: 20px;
+      border-radius: 50px;
 
       overflow: hidden;
     }
@@ -344,72 +495,142 @@
 
       border-radius: inherit;
 
-      transition: width 0.4s ease;
+      transition: width .35s ease;
     }
 
-    .question-number {
-      color: var(--primary);
 
+    /* =========================================
+       STREAK
+    ========================================= */
+
+    .streak {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      margin: 22px 0 20px;
+
+      padding: 12px 14px;
+
+      border-radius: var(--radius-md);
+
+      background: var(--warning-bg);
+
+      border: 1px solid rgba(245, 158, 11, .2);
+    }
+
+    .streak span {
       font-size: 12px;
-      font-weight: 800;
-
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-
-      margin-bottom: 10px;
+      color: var(--muted);
     }
+
+    .streak strong {
+      color: var(--warning);
+      font-size: 14px;
+    }
+
+
+    /* =========================================
+       QUESTION
+    ========================================= */
 
     .question {
-      font-size: clamp(22px, 4vw, 30px);
+      font-size: clamp(23px, 4vw, 31px);
 
       line-height: 1.25;
 
       letter-spacing: -1px;
 
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
 
-    /* =========================
+    /* =========================================
        OPTIONS
-    ========================= */
+    ========================================= */
 
     .options {
       display: grid;
-      gap: 11px;
+
+      gap: 10px;
     }
 
     .option {
+      display: flex;
+      align-items: center;
+
       width: 100%;
 
-      padding: 16px;
+      min-height: 55px;
+
+      padding: 13px;
 
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
 
-      background: var(--card);
+      background: var(--surface);
+
       color: var(--text);
+
+      border-radius: var(--radius-md);
 
       text-align: left;
 
       cursor: pointer;
 
-      transition: 0.18s ease;
+      transition: var(--transition);
     }
 
     .option:hover:not(:disabled) {
       border-color: var(--primary);
-      background: var(--primary-light);
+
+      background: var(--primary-soft);
+
+      transform: translateX(2px);
+    }
+
+    .option-letter {
+      width: 30px;
+      height: 30px;
+
+      display: grid;
+      place-items: center;
+
+      flex-shrink: 0;
+
+      margin-right: 12px;
+
+      border-radius: 9px;
+
+      background: var(--surface-2);
+
+      border: 1px solid var(--border);
+
+      font-size: 12px;
+      font-weight: 850;
     }
 
     .option.correct {
       border-color: var(--success);
+
       background: var(--success-bg);
+    }
+
+    .option.correct .option-letter {
+      background: var(--success);
+      color: white;
+      border-color: var(--success);
     }
 
     .option.wrong {
       border-color: var(--danger);
+
       background: var(--danger-bg);
+    }
+
+    .option.wrong .option-letter {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
     }
 
     .option:disabled {
@@ -417,210 +638,271 @@
     }
 
 
-    /* =========================
+    /* =========================================
        FEEDBACK
-    ========================= */
+    ========================================= */
 
     .feedback {
-      margin-top: 16px;
+      margin-top: 15px;
 
       padding: 14px;
 
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
 
-      background: var(--primary-light);
+      background: var(--surface-2);
 
-      color: var(--text);
+      color: var(--muted);
 
       font-size: 13px;
 
       line-height: 1.6;
     }
 
-    .next-btn {
+
+    /* =========================================
+       QUIZ ACTIONS
+    ========================================= */
+
+    .quiz-actions {
+      display: flex;
+
+      gap: 10px;
+
       margin-top: 14px;
     }
 
+    .next-btn,
+    .skip-btn {
+      min-height: 46px;
 
-    /* =========================
+      border-radius: var(--radius-sm);
+
+      cursor: pointer;
+
+      font-weight: 800;
+    }
+
+    .next-btn {
+      flex: 1;
+
+      border: none;
+
+      background: var(--primary);
+
+      color: white;
+    }
+
+    .skip-btn {
+      padding: 0 18px;
+
+      border: 1px solid var(--border);
+
+      background: var(--surface);
+
+      color: var(--muted);
+    }
+
+    .next-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .skip-btn:hover {
+      border-color: var(--primary);
+      color: var(--text);
+    }
+
+
+    /* =========================================
        RESULT
-    ========================= */
+    ========================================= */
 
     .result {
       text-align: center;
     }
 
     .score-circle {
-      width: 130px;
-      height: 130px;
+      width: 140px;
+      height: 140px;
 
-      margin: 5px auto 22px;
-
-      border-radius: 50%;
-
-      background: var(--primary);
-
-      color: white;
+      margin: 8px auto 20px;
 
       display: flex;
       flex-direction: column;
 
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          145deg,
+          var(--primary),
+          #3028a8
+        );
+
+      color: white;
 
       box-shadow:
-        0 15px 35px rgba(79, 70, 229, 0.25);
+        0 18px 45px rgba(79, 70, 229, .25);
     }
 
-    .score {
-      font-size: 38px;
+    .score-number {
+      font-size: 40px;
       font-weight: 900;
+
       line-height: 1;
     }
 
     .score-label {
-      font-size: 10px;
-      opacity: 0.8;
+      font-size: 9px;
+
+      opacity: .75;
 
       margin-top: 5px;
     }
 
     .result h2 {
-      font-size: 30px;
+      font-size: clamp(27px, 5vw, 37px);
 
-      letter-spacing: -1px;
+      letter-spacing: -1.5px;
 
       margin-bottom: 8px;
     }
 
-    .result-description {
-      color: var(--muted);
-
-      max-width: 520px;
+    .result-text {
+      max-width: 550px;
 
       margin: auto;
 
-      line-height: 1.7;
+      color: var(--muted);
 
       font-size: 14px;
+
+      line-height: 1.7;
     }
 
 
-    /* =========================
-       STATS
-    ========================= */
+    /* =========================================
+       RESULT STATS
+    ========================================= */
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
 
-      gap: 10px;
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 9px;
 
       margin: 25px 0;
     }
 
     .stat {
-      padding: 15px;
+      padding: 14px 8px;
 
-      background: var(--bg);
+      background: var(--surface-2);
 
       border: 1px solid var(--border);
 
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
     }
 
     .stat strong {
       display: block;
 
-      font-size: 19px;
+      font-size: 18px;
 
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
 
     .stat span {
       color: var(--muted);
 
-      font-size: 11px;
+      font-size: 10px;
     }
 
 
-    /* =========================
-       BLOG PREVIEW
-    ========================= */
+    /* =========================================
+       BLOG
+    ========================================= */
 
     .blog {
+      overflow: hidden;
+
       text-align: left;
 
       border: 1px solid var(--border);
 
-      border-radius: 20px;
+      border-radius: var(--radius-lg);
 
-      overflow: hidden;
+      background: var(--surface);
 
-      margin-top: 24px;
-
-      background: var(--card);
+      margin-top: 25px;
     }
 
-    .blog-image {
-      min-height: 200px;
+    .blog-cover {
+      min-height: 210px;
 
       padding: 24px;
 
       display: flex;
       flex-direction: column;
+
       justify-content: space-between;
 
       color: white;
 
       background:
         radial-gradient(
-          circle at 20% 20%,
-          #7770ff,
+          circle at 15% 20%,
+          rgba(122, 112, 255, .9),
           transparent 30%
         ),
         linear-gradient(
           135deg,
-          #181820,
+          #15151d,
           #393477
         );
     }
 
-    .blog-label {
+    .blog-tag {
       font-size: 10px;
 
       text-transform: uppercase;
 
-      letter-spacing: 0.12em;
+      letter-spacing: .13em;
 
-      opacity: 0.75;
+      font-weight: 850;
 
-      font-weight: 800;
+      opacity: .7;
     }
 
-    .blog-image h3 {
-      font-size: clamp(25px, 5vw, 34px);
+    .blog-cover h3 {
+      max-width: 620px;
 
-      max-width: 600px;
+      font-size: clamp(25px, 5vw, 36px);
 
       line-height: 1.05;
 
       letter-spacing: -1.5px;
     }
 
-    .blog-content {
+    .blog-body {
       padding: 22px;
     }
 
     .blog-meta {
       color: var(--muted);
 
-      font-size: 11px;
+      font-size: 10px;
+
+      font-weight: 750;
 
       margin-bottom: 10px;
     }
 
-    .blog-content p {
+    .blog-body p {
       color: var(--muted);
 
       font-size: 14px;
@@ -630,74 +912,70 @@
 
     .blog-actions {
       display: flex;
+
       gap: 10px;
 
       margin-top: 18px;
     }
 
-    .secondary-btn {
+    .blog-actions button {
       flex: 1;
 
-      padding: 13px;
+      min-height: 46px;
 
       border-radius: var(--radius-sm);
 
-      border: 1px solid var(--border);
+      cursor: pointer;
 
-      background: var(--card);
+      font-weight: 800;
+    }
+
+    .restart {
+      background: var(--surface);
+
       color: var(--text);
 
-      font-weight: 700;
-
-      cursor: pointer;
+      border: 1px solid var(--border);
     }
 
-    .secondary-btn:hover {
-      border-color: var(--primary);
-    }
+    .read {
+      background: var(--primary);
 
-    .blog-actions .primary-btn {
-      flex: 1;
-    }
+      color: white;
 
-
-    /* =========================
-       UTILITIES
-    ========================= */
-
-    .hidden {
-      display: none;
+      border: none;
     }
 
 
-    /* =========================
-       RESPONSIVE
-    ========================= */
+    /* =========================================
+       MOBILE
+    ========================================= */
 
-    @media (max-width: 600px) {
+    @media (max-width: 650px) {
 
       body {
-        padding: 20px 12px;
+        padding: 18px 10px;
       }
 
       .card {
         padding: 22px;
+        border-radius: 22px;
+      }
+
+      .categories {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .difficulty {
         grid-template-columns: 1fr;
       }
 
-      .difficulty-btn {
-        padding: 14px;
-      }
-
       .stats {
-        gap: 7px;
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .stat {
-        padding: 12px 7px;
+      .quiz-header {
+        align-items: flex-start;
       }
 
       .blog-actions {
@@ -705,25 +983,54 @@
       }
 
     }
+
+
+    @media (max-width: 380px) {
+
+      .card {
+        padding: 17px;
+      }
+
+      .quiz-meta {
+        gap: 5px;
+      }
+
+      .pill {
+        font-size: 9px;
+      }
+
+    }
+
   </style>
 </head>
+
 
 <body>
 
   <main class="app">
 
-    <!-- HEADER -->
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
     <header class="header">
 
-      <div class="logo">
-        <div class="logo-icon">Q</div>
+      <div class="brand">
+
+        <div class="brand-icon">
+          Q
+        </div>
+
         QuizBlog
+
       </div>
 
+
       <button
-        class="theme-toggle"
-        id="themeToggle"
-        aria-label="Toggle dark mode"
+        class="theme-btn"
+        id="themeBtn"
+        aria-label="Toggle theme"
       >
         🌙
       </button>
@@ -731,29 +1038,108 @@
     </header>
 
 
-    <!-- =========================
-         SETUP
-    ========================== -->
 
-    <section class="card" id="setup">
+    <!-- =========================================
+         SETUP SCREEN
+    ========================================== -->
 
-      <div class="intro">
+    <section
+      class="card"
+      id="setup"
+    >
+
+      <div class="setup-header">
 
         <div class="eyebrow">
           Brain buffet
         </div>
 
         <h1>
-          Take the quiz.<br>
-          Unlock the blog.
+          Answer.<br>
+          Score.<br>
+          Unlock.
         </h1>
 
         <p>
-          Answer increasingly suspicious questions,
-          collect points, and unlock a blog preview
-          based on your performance.
+          Take a funny little quiz about general knowledge,
+          HTML, CSS and JavaScript. Get through the questions
+          and unlock your exclusive blog preview.
         </p>
 
+      </div>
+
+
+      <!-- CATEGORY -->
+
+      <div class="section-title">
+        Choose a category
+      </div>
+
+
+      <div class="categories">
+
+        <button
+          class="category active"
+          data-category="mixed"
+        >
+          <span class="category-icon">🧠</span>
+          <span class="category-name">
+            Mixed
+          </span>
+        </button>
+
+
+        <button
+          class="category"
+          data-category="general"
+        >
+          <span class="category-icon">🌍</span>
+          <span class="category-name">
+            General
+          </span>
+        </button>
+
+
+        <button
+          class="category"
+          data-category="html"
+        >
+          <span class="category-icon">🌐</span>
+          <span class="category-name">
+            HTML
+          </span>
+        </button>
+
+
+        <button
+          class="category"
+          data-category="css"
+        >
+          <span class="category-icon">🎨</span>
+          <span class="category-name">
+            CSS
+          </span>
+        </button>
+
+
+        <button
+          class="category"
+          data-category="javascript"
+        >
+          <span class="category-icon">⚡</span>
+          <span class="category-name">
+            JavaScript
+          </span>
+        </button>
+
+      </div>
+
+
+
+      <!-- DIFFICULTY -->
+
+      <div class="section-title">
+        Choose difficulty
       </div>
 
 
@@ -763,24 +1149,47 @@
           class="difficulty-btn active"
           data-level="easy"
         >
-          <strong>Easy 😌</strong>
-          <span>Warm-up mode</span>
+
+          <strong>
+            Easy 😌
+          </strong>
+
+          <span>
+            20 sec/question · Chill mode
+          </span>
+
         </button>
+
 
         <button
           class="difficulty-btn"
           data-level="medium"
         >
-          <strong>Medium 🧠</strong>
-          <span>Brain mildly cooked</span>
+
+          <strong>
+            Medium 🧠
+          </strong>
+
+          <span>
+            15 sec/question · Brain warming
+          </span>
+
         </button>
+
 
         <button
           class="difficulty-btn"
           data-level="hard"
         >
-          <strong>Hard 💀</strong>
-          <span>Regret included</span>
+
+          <strong>
+            Hard 💀
+          </strong>
+
+          <span>
+            10 sec/question · Good luck
+          </span>
+
         </button>
 
       </div>
@@ -796,78 +1205,153 @@
     </section>
 
 
-    <!-- =========================
-         QUIZ
-    ========================== -->
+
+    <!-- =========================================
+         QUIZ SCREEN
+    ========================================== -->
 
     <section
       class="card hidden"
       id="quiz"
     >
 
-      <div class="quiz-top">
 
-        <div class="progress-info">
+      <div class="quiz-header">
 
-          <span id="questionCounter">
-            Question 1 of 5
+        <div class="quiz-meta">
+
+          <span
+            class="pill"
+            id="categoryPill"
+          >
+            Mixed
           </span>
 
-          <span id="percentage">
-            20%
+          <span
+            class="pill"
+            id="levelPill"
+          >
+            Easy
           </span>
 
         </div>
 
-        <div class="progress">
-          <div
-            class="progress-bar"
-            id="progressBar"
-          ></div>
+
+        <div
+          class="timer"
+          id="timer"
+        >
+          20s
         </div>
 
       </div>
 
 
+
+      <!-- PROGRESS -->
+
+      <div class="progress-info">
+
+        <span id="counter">
+          Question 1 of 10
+        </span>
+
+        <span id="percent">
+          10%
+        </span>
+
+      </div>
+
+
+      <div class="progress">
+
+        <div
+          class="progress-bar"
+          id="progressBar"
+        ></div>
+
+      </div>
+
+
+
+      <!-- STREAK -->
+
+      <div class="streak">
+
+        <span>
+          Current streak
+        </span>
+
+        <strong id="streak">
+          🔥 0
+        </strong>
+
+      </div>
+
+
+
+      <!-- QUESTION -->
+
       <div
-        class="question-number"
-        id="difficultyLabel"
+        class="eyebrow"
+        id="questionCategory"
       >
-        Easy mode
+        Question
       </div>
 
 
       <h2
         class="question"
         id="question"
-      ></h2>
+      >
+      </h2>
 
+
+      <!-- OPTIONS -->
 
       <div
         class="options"
         id="options"
-      ></div>
+      >
+      </div>
 
+
+      <!-- FEEDBACK -->
 
       <div
         class="feedback hidden"
         id="feedback"
-      ></div>
-
-
-      <button
-        class="primary-btn next-btn hidden"
-        id="nextBtn"
       >
-        Next question →
-      </button>
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="quiz-actions">
+
+        <button
+          class="skip-btn"
+          id="skipBtn"
+        >
+          Skip
+        </button>
+
+        <button
+          class="next-btn hidden"
+          id="nextBtn"
+        >
+          Next →
+        </button>
+
+      </div>
 
     </section>
 
 
-    <!-- =========================
+
+    <!-- =========================================
          RESULT
-    ========================== -->
+    ========================================== -->
 
     <section
       class="card result hidden"
@@ -882,7 +1366,7 @@
       <div class="score-circle">
 
         <span
-          class="score"
+          class="score-number"
           id="score"
         >
           0
@@ -901,45 +1385,82 @@
 
 
       <p
-        class="result-description"
-        id="resultDescription"
-      ></p>
+        class="result-text"
+        id="resultText"
+      >
+      </p>
 
+
+
+      <!-- STATS -->
 
       <div class="stats">
 
         <div class="stat">
+
           <strong id="correctStat">
-            0/5
+            0
           </strong>
-          <span>Correct</span>
+
+          <span>
+            Correct
+          </span>
+
         </div>
 
-        <div class="stat">
-          <strong id="levelStat">
-            Easy
-          </strong>
-          <span>Difficulty</span>
-        </div>
 
         <div class="stat">
+
+          <strong id="wrongStat">
+            0
+          </strong>
+
+          <span>
+            Wrong
+          </span>
+
+        </div>
+
+
+        <div class="stat">
+
           <strong id="accuracyStat">
             0%
           </strong>
-          <span>Accuracy</span>
+
+          <span>
+            Accuracy
+          </span>
+
+        </div>
+
+
+        <div class="stat">
+
+          <strong id="bestStreakStat">
+            0
+          </strong>
+
+          <span>
+            Best streak
+          </span>
+
         </div>
 
       </div>
 
 
-      <!-- BLOG PREVIEW -->
+
+      <!-- =========================================
+           BLOG PREVIEW
+      ========================================== -->
 
       <article class="blog">
 
-        <div class="blog-image">
+        <div class="blog-cover">
 
-          <span class="blog-label">
-            Blog preview · Unlocked
+          <span class="blog-tag">
+            🔓 Blog preview unlocked
           </span>
 
           <h3 id="blogTitle">
@@ -949,31 +1470,32 @@
         </div>
 
 
-        <div class="blog-content">
+        <div class="blog-body">
 
           <div class="blog-meta">
             THE BYTE · 4 MIN READ
           </div>
 
+
           <p id="blogDescription">
-            A quick preview of your personalized article.
           </p>
 
 
           <div class="blog-actions">
 
             <button
-              class="secondary-btn"
+              class="restart"
               id="restartBtn"
             >
               Try again
             </button>
 
+
             <button
-              class="primary-btn"
+              class="read"
               id="readBtn"
             >
-              Read preview
+              Read article →
             </button>
 
           </div>
@@ -987,279 +1509,310 @@
   </main>
 
 
+
   <script>
 
-    /* =========================
-       QUIZ DATA
-    ========================== */
+    /* =========================================
+       QUESTION DATABASE
+    ========================================== */
 
-    const quizData = {
+    const questionBank = {
 
-      easy: [
+      general: [
 
         {
-          question:
-            "Which HTML tag is normally used for the biggest heading?",
+          level: "easy",
+          q: "Which planet is known as the Red Planet?",
+          a: [
+            "Mars",
+            "Venus",
+            "Jupiter",
+            "Mercury"
+          ],
+          correct: 0,
+          explanation:
+            "Mars is called the Red Planet because iron minerals in its surface give it a reddish appearance."
+        },
 
-          options: [
+        {
+          level: "easy",
+          q: "How many continents are commonly recognized on Earth?",
+          a: [
+            "7",
+            "5",
+            "6",
+            "8"
+          ],
+          correct: 0,
+          explanation:
+            "The commonly taught model recognizes seven continents."
+        },
+
+        {
+          level: "medium",
+          q: "Which gas makes up the largest portion of Earth's atmosphere?",
+          a: [
+            "Nitrogen",
+            "Oxygen",
+            "Carbon dioxide",
+            "Hydrogen"
+          ],
+          correct: 0,
+          explanation:
+            "Nitrogen makes up roughly 78% of Earth's atmosphere."
+        },
+
+        {
+          level: "medium",
+          q: "What is the largest ocean on Earth?",
+          a: [
+            "Pacific Ocean",
+            "Atlantic Ocean",
+            "Indian Ocean",
+            "Arctic Ocean"
+          ],
+          correct: 0,
+          explanation:
+            "The Pacific Ocean is the largest and deepest ocean on Earth."
+        },
+
+        {
+          level: "hard",
+          q: "Which element has the chemical symbol W?",
+          a: [
+            "Tungsten",
+            "Tin",
+            "Titanium",
+            "Tantalum"
+          ],
+          correct: 0,
+          explanation:
+            "The symbol W comes from the historical name wolfram, referring to tungsten."
+        }
+
+      ],
+
+
+      html: [
+
+        {
+          level: "easy",
+          q: "Which HTML element is used for the largest heading?",
+          a: [
             "<h1>",
-            "<p>",
-            "<big>",
-            "<header>"
+            "<heading>",
+            "<h6>",
+            "<title>"
           ],
-
-          answer: 0,
-
-          feedback:
-            "The heading hierarchy starts with h1. Your HTML just breathed a sigh of relief."
+          correct: 0,
+          explanation:
+            "h1 represents the highest-level heading in HTML."
         },
 
         {
-          question:
-            "Your CSS refuses to work. What should you probably check first?",
-
-          options: [
-            "The selector and browser DevTools",
-            "Yell at the laptop",
-            "Delete the internet",
-            "Rename the CSS file"
+          level: "easy",
+          q: "Which HTML element creates a hyperlink?",
+          a: [
+            "<a>",
+            "<link>",
+            "<href>",
+            "<url>"
           ],
-
-          answer: 0,
-
-          feedback:
-            "DevTools can quickly show whether your CSS rule is matching or being overridden."
+          correct: 0,
+          explanation:
+            "The anchor element, <a>, creates hyperlinks."
         },
 
         {
-          question:
-            "Which one is a JavaScript data type?",
-
-          options: [
-            "String",
-            "Website",
-            "Pixel",
-            "Button"
+          level: "medium",
+          q: "Which attribute provides alternative text for an image?",
+          a: [
+            "alt",
+            "src",
+            "title",
+            "href"
           ],
-
-          answer: 0,
-
-          feedback:
-            "String is a JavaScript primitive data type. Pixels are innocent bystanders."
+          correct: 0,
+          explanation:
+            "The alt attribute provides alternative text describing an image."
         },
 
         {
-          question:
-            "What does CSS mainly control?",
-
-          options: [
-            "Presentation and layout",
-            "Server electricity",
-            "Database passwords",
-            "Wi-Fi speed"
+          level: "medium",
+          q: "Which HTML element is intended for a self-contained piece of content?",
+          a: [
+            "<article>",
+            "<section>",
+            "<div>",
+            "<content>"
           ],
-
-          answer: 0,
-
-          feedback:
-            "CSS controls the presentation, styling and layout of a webpage."
+          correct: 0,
+          explanation:
+            "The article element represents a self-contained composition."
         },
 
         {
-          question:
-            "What does type=\"button\" do inside a form?",
-
-          options: [
-            "It does not submit the form",
-            "It deletes the form",
-            "It reloads the server",
-            "It submits twice"
+          level: "hard",
+          q: "Which attribute can associate a label with a specific form control?",
+          a: [
+            "for",
+            "target",
+            "name",
+            "action"
           ],
-
-          answer: 0,
-
-          feedback:
-            "A button with type=\"button\" does not trigger the form's submit action."
+          correct: 0,
+          explanation:
+            "A label's for attribute corresponds to the id of the associated form control."
         }
 
       ],
 
 
-      medium: [
+      css: [
 
         {
-          question:
-            "What does display: flex mainly create?",
-
-          options: [
-            "A flex formatting context",
-            "A database connection",
-            "A JavaScript loop",
-            "A new HTML document"
+          level: "easy",
+          q: "Which CSS property changes text color?",
+          a: [
+            "color",
+            "font-color",
+            "text-color",
+            "foreground"
           ],
-
-          answer: 0,
-
-          feedback:
-            "Flexbox creates a layout context designed for arranging elements along axes."
+          correct: 0,
+          explanation:
+            "The color property controls the foreground color of text."
         },
 
         {
-          question:
-            "What does event bubbling mean in the DOM?",
-
-          options: [
-            "An event can propagate from a target toward ancestors",
-            "Events repeat forever",
-            "A webpage expands",
-            "CSS events become JavaScript"
+          level: "easy",
+          q: "Which CSS property creates rounded corners?",
+          a: [
+            "border-radius",
+            "corner-radius",
+            "radius",
+            "round-border"
           ],
-
-          answer: 0,
-
-          feedback:
-            "After an event happens on a target, it can propagate upward through ancestor elements."
+          correct: 0,
+          explanation:
+            "border-radius creates rounded corners on elements."
         },
 
         {
-          question:
-            "Which CSS property controls space between content and its border?",
-
-          options: [
-            "padding",
-            "margin",
-            "gap",
-            "outline"
+          level: "medium",
+          q: "Which CSS layout system is designed primarily for one-dimensional layouts?",
+          a: [
+            "Flexbox",
+            "Grid",
+            "Positioning",
+            "Float"
           ],
-
-          answer: 0,
-
-          feedback:
-            "Padding is the space between an element's content and its border."
+          correct: 0,
+          explanation:
+            "Flexbox is primarily designed for arranging items along one dimension."
         },
 
         {
-          question:
-            "What does Array.prototype.map() return?",
+          level: "medium",
+          q: "What does 1fr represent in CSS Grid?",
+          a: [
+            "A fraction of the available space",
+            "One fixed pixel",
+            "One font size",
+            "One row only"
+          ],
+          correct: 0,
+          explanation:
+            "The fr unit represents a fraction of the available space in a grid container."
+        },
 
-          options: [
+        {
+          level: "hard",
+          q: "Which selector has higher specificity?",
+          a: [
+            "#menu",
+            ".menu",
+            "nav",
+            "*"
+          ],
+          correct: 0,
+          explanation:
+            "An ID selector has higher specificity than a class, element, or universal selector."
+        }
+
+      ],
+
+
+      javascript: [
+
+        {
+          level: "easy",
+          q: "Which keyword declares a block-scoped variable that can be reassigned?",
+          a: [
+            "let",
+            "var",
+            "const",
+            "define"
+          ],
+          correct: 0,
+          explanation:
+            "let creates a block-scoped variable that can later be reassigned."
+        },
+
+        {
+          level: "easy",
+          q: "Which symbol is commonly used for strict equality?",
+          a: [
+            "===",
+            "==",
+            "=",
+            "!==="
+          ],
+          correct: 0,
+          explanation:
+            "=== performs strict equality without type coercion."
+        },
+
+        {
+          level: "medium",
+          q: "What does Array.map() return?",
+          a: [
             "A new array",
-            "A single number",
-            "An HTML document",
-            "A CSS stylesheet"
+            "A boolean",
+            "A string only",
+            "Nothing"
           ],
-
-          answer: 0,
-
-          feedback:
-            "map() creates and returns a new array containing the callback results."
+          correct: 0,
+          explanation:
+            "map() creates and returns a new array containing the results of its callback."
         },
 
         {
-          question:
-            "Why is semantic HTML useful?",
-
-          options: [
-            "It communicates structure and meaning",
-            "It makes every page instant",
-            "It replaces JavaScript",
-            "It guarantees perfect SEO"
+          level: "medium",
+          q: "Which method adds an item to the end of an array?",
+          a: [
+            "push()",
+            "append()",
+            "add()",
+            "insert()"
           ],
-
-          answer: 0,
-
-          feedback:
-            "Semantic HTML communicates the role and structure of content to browsers and assistive technologies."
-        }
-
-      ],
-
-
-      hard: [
-
-        {
-          question:
-            "In CSS Grid, what does minmax(200px, 1fr) describe?",
-
-          options: [
-            "A track with a 200px minimum and flexible maximum",
-            "Exactly 200px of fixed width",
-            "A track that can never shrink",
-            "Two separate grid columns"
-          ],
-
-          answer: 0,
-
-          feedback:
-            "minmax() defines a minimum and maximum track size. 1fr allows flexible growth."
+          correct: 0,
+          explanation:
+            "push() adds one or more elements to the end of an array."
         },
 
         {
-          question:
-            "Why can a JavaScript closure access a variable after the outer function returns?",
-
-          options: [
-            "It retains access to its lexical environment",
-            "JavaScript makes every variable global",
-            "Browsers store every variable forever",
-            "The variable becomes CSS"
+          level: "hard",
+          q: "What does a JavaScript closure retain access to?",
+          a: [
+            "Its lexical environment",
+            "Only global variables",
+            "Only DOM elements",
+            "The browser cache"
           ],
-
-          answer: 0,
-
-          feedback:
-            "A closure retains access to bindings from its lexical environment."
-        },
-
-        {
-          question:
-            "What is the key difference between == and === in JavaScript?",
-
-          options: [
-            "=== does not perform type coercion",
-            "== always compares objects by reference",
-            "=== converts strings to numbers first",
-            "They are identical"
-          ],
-
-          answer: 0,
-
-          feedback:
-            "Strict equality with === compares without the type coercion used by loose equality."
-        },
-
-        {
-          question:
-            "What does the CSS cascade help determine?",
-
-          options: [
-            "Which applicable declaration wins",
-            "How fast JavaScript runs",
-            "Which HTML opens first",
-            "How many images are stored"
-          ],
-
-          answer: 0,
-
-          feedback:
-            "The cascade resolves competing CSS declarations using factors such as specificity and order."
-        },
-
-        {
-          question:
-            "Why can an index be problematic as a React list key when items are reordered?",
-
-          options: [
-            "Component identity can follow positions instead of items",
-            "Indexes always crash React",
-            "React cannot render arrays",
-            "Keys only work with strings"
-          ],
-
-          answer: 0,
-
-          feedback:
-            "Position-based keys can make React associate component state with the wrong item after reordering."
+          correct: 0,
+          explanation:
+            "A closure retains access to variables from its surrounding lexical environment."
         }
 
       ]
@@ -1267,9 +1820,11 @@
     };
 
 
-    /* =========================
+    /* =========================================
        STATE
-    ========================== */
+    ========================================== */
+
+    let selectedCategory = "mixed";
 
     let selectedLevel = "easy";
 
@@ -1279,12 +1834,22 @@
 
     let correctAnswers = 0;
 
+    let wrongAnswers = 0;
+
+    let streak = 0;
+
+    let bestStreak = 0;
+
     let answered = false;
 
+    let timerInterval;
 
-    /* =========================
+    let timeLeft = 20;
+
+
+    /* =========================================
        ELEMENTS
-    ========================== */
+    ========================================== */
 
     const setup =
       document.getElementById("setup");
@@ -1301,51 +1866,108 @@
     const nextBtn =
       document.getElementById("nextBtn");
 
+    const skipBtn =
+      document.getElementById("skipBtn");
+
     const restartBtn =
       document.getElementById("restartBtn");
 
-    const themeToggle =
-      document.getElementById("themeToggle");
+    const themeBtn =
+      document.getElementById("themeBtn");
 
 
-    /* =========================
-       DIFFICULTY
-    ========================== */
+
+    /* =========================================
+       CATEGORY SELECTION
+    ========================================== */
+
+    document
+      .querySelectorAll(".category")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            document
+              .querySelectorAll(".category")
+              .forEach(btn =>
+                btn.classList.remove("active")
+              );
+
+            button.classList.add("active");
+
+            selectedCategory =
+              button.dataset.category;
+
+          }
+        );
+
+      });
+
+
+
+    /* =========================================
+       DIFFICULTY SELECTION
+    ========================================== */
 
     document
       .querySelectorAll(".difficulty-btn")
       .forEach(button => {
 
-        button.addEventListener("click", () => {
+        button.addEventListener(
+          "click",
+          () => {
 
-          document
-            .querySelectorAll(".difficulty-btn")
-            .forEach(btn =>
-              btn.classList.remove("active")
-            );
+            document
+              .querySelectorAll(".difficulty-btn")
+              .forEach(btn =>
+                btn.classList.remove("active")
+              );
 
-          button.classList.add("active");
+            button.classList.add("active");
 
-          selectedLevel =
-            button.dataset.level;
+            selectedLevel =
+              button.dataset.level;
 
-        });
+          }
+        );
 
       });
 
 
-    /* =========================
-       START QUIZ
-    ========================== */
 
-    startBtn.addEventListener("click", () => {
+    /* =========================================
+       START
+    ========================================== */
 
-      questions =
-        quizData[selectedLevel];
+    startBtn.addEventListener(
+      "click",
+      startQuiz
+    );
+
+
+    function startQuiz() {
+
+      clearInterval(timerInterval);
 
       currentQuestion = 0;
 
       correctAnswers = 0;
+
+      wrongAnswers = 0;
+
+      streak = 0;
+
+      bestStreak = 0;
+
+
+      questions =
+        buildQuiz();
+
+
+      shuffle(questions);
+
 
       setup.classList.add("hidden");
 
@@ -1353,89 +1975,263 @@
 
       quiz.classList.remove("hidden");
 
+
+      updateStreak();
+
       showQuestion();
 
-    });
+    }
 
 
-    /* =========================
+
+    /* =========================================
+       BUILD QUIZ
+    ========================================== */
+
+    function buildQuiz() {
+
+      let source = [];
+
+
+      if (selectedCategory === "mixed") {
+
+        Object
+          .values(questionBank)
+          .forEach(category => {
+
+            source.push(...category);
+
+          });
+
+      } else {
+
+        source =
+          [...questionBank[selectedCategory]];
+
+      }
+
+
+      /*
+        Easy:
+        mostly easy questions
+
+        Medium:
+        medium + some easy
+
+        Hard:
+        hard + medium
+      */
+
+      let filtered =
+        source.filter(
+          question => {
+
+            if (selectedLevel === "easy") {
+
+              return question.level === "easy";
+
+            }
+
+            if (selectedLevel === "medium") {
+
+              return (
+                question.level === "medium" ||
+                question.level === "easy"
+              );
+
+            }
+
+            return (
+              question.level === "hard" ||
+              question.level === "medium"
+            );
+
+          }
+        );
+
+
+      /*
+        If a category does not have enough
+        questions at a difficulty, use all
+        available questions.
+      */
+
+      if (filtered.length < 10) {
+
+        filtered = [...source];
+
+      }
+
+
+      shuffle(filtered);
+
+
+      return filtered.slice(
+        0,
+        Math.min(10, filtered.length)
+      );
+
+    }
+
+
+
+    /* =========================================
        SHOW QUESTION
-    ========================== */
+    ========================================== */
 
     function showQuestion() {
 
+      clearInterval(timerInterval);
+
       answered = false;
+
 
       const current =
         questions[currentQuestion];
 
+
       const total =
         questions.length;
 
-      const questionNumber =
+
+      const number =
         currentQuestion + 1;
 
-      const percentage =
+
+      const percent =
         Math.round(
-          (questionNumber / total) * 100
+          number / total * 100
         );
 
 
       document.getElementById(
-        "questionCounter"
+        "counter"
       ).textContent =
-        `Question ${questionNumber} of ${total}`;
+        `Question ${number} of ${total}`;
 
 
       document.getElementById(
-        "percentage"
+        "percent"
       ).textContent =
-        `${percentage}%`;
+        `${percent}%`;
 
 
       document.getElementById(
         "progressBar"
       ).style.width =
-        `${percentage}%`;
+        `${percent}%`;
 
 
       document.getElementById(
-        "difficultyLabel"
+        "categoryPill"
       ).textContent =
-        `${capitalize(selectedLevel)} mode`;
+        selectedCategory === "mixed"
+          ? "Mixed"
+          : capitalize(selectedCategory);
+
+
+      document.getElementById(
+        "levelPill"
+      ).textContent =
+        capitalize(selectedLevel);
+
+
+      document.getElementById(
+        "questionCategory"
+      ).textContent =
+        current.level + " question";
 
 
       document.getElementById(
         "question"
       ).textContent =
-        current.question;
+        current.q;
+
+
+      document.getElementById(
+        "feedback"
+      ).classList.add("hidden");
+
+
+      nextBtn.classList.add("hidden");
 
 
       const options =
         document.getElementById("options");
 
+
       options.innerHTML = "";
 
 
-      current.options.forEach(
-        (option, index) => {
+      /*
+        IMPORTANT:
+        We shuffle the answers here.
+        This means the correct answer is
+        NOT always option A.
+      */
+
+      const answerObjects =
+        current.a.map(
+          (answer, index) => ({
+            text: answer,
+            correct:
+              index === current.correct
+          })
+        );
+
+
+      shuffle(answerObjects);
+
+
+      answerObjects.forEach(
+        (answer, index) => {
 
           const button =
             document.createElement("button");
 
+          button.type = "button";
+
           button.className =
             "option";
 
-          button.textContent =
-            option;
 
-          button.type =
-            "button";
+          const letter =
+            document.createElement("span");
+
+          letter.className =
+            "option-letter";
+
+          letter.textContent =
+            String.fromCharCode(
+              65 + index
+            );
+
+
+          const text =
+            document.createElement("span");
+
+          text.textContent =
+            answer.text;
+
+
+          button.appendChild(letter);
+
+          button.appendChild(text);
+
+
+          button.dataset.correct =
+            answer.correct;
+
 
           button.addEventListener(
             "click",
-            () => selectAnswer(index)
+            () => answerQuestion(
+              button,
+              answer.correct,
+              current
+            )
           );
+
 
           options.appendChild(button);
 
@@ -1443,66 +2239,234 @@
       );
 
 
-      document
-        .getElementById("feedback")
-        .classList.add("hidden");
-
-
-      nextBtn.classList.add("hidden");
+      startTimer();
 
     }
 
 
-    /* =========================
-       SELECT ANSWER
-    ========================== */
 
-    function selectAnswer(index) {
+    /* =========================================
+       TIMER
+    ========================================== */
+
+    function startTimer() {
+
+      if (selectedLevel === "easy") {
+
+        timeLeft = 20;
+
+      } else if (
+        selectedLevel === "medium"
+      ) {
+
+        timeLeft = 15;
+
+      } else {
+
+        timeLeft = 10;
+
+      }
+
+
+      updateTimer();
+
+
+      timerInterval =
+        setInterval(
+          () => {
+
+            timeLeft--;
+
+            updateTimer();
+
+
+            if (timeLeft <= 0) {
+
+              clearInterval(timerInterval);
+
+              timeOut();
+
+            }
+
+          },
+          1000
+        );
+
+    }
+
+
+
+    function updateTimer() {
+
+      const timer =
+        document.getElementById("timer");
+
+
+      timer.textContent =
+        `${timeLeft}s`;
+
+
+      if (timeLeft <= 5) {
+
+        timer.classList.add(
+          "warning"
+        );
+
+      } else {
+
+        timer.classList.remove(
+          "warning"
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================
+       TIME OUT
+    ========================================== */
+
+    function timeOut() {
 
       if (answered) return;
 
       answered = true;
 
-      const current =
-        questions[currentQuestion];
+      wrongAnswers++;
 
-      const optionButtons =
+      streak = 0;
+
+      updateStreak();
+
+
+      const buttons =
         document.querySelectorAll(".option");
 
 
-      optionButtons.forEach(
-        button => button.disabled = true
+      buttons.forEach(button => {
+
+        button.disabled = true;
+
+
+        if (
+          button.dataset.correct ===
+          "true"
+        ) {
+
+          button.classList.add(
+            "correct"
+          );
+
+        }
+
+      });
+
+
+      const current =
+        questions[currentQuestion];
+
+
+      showFeedback(
+        `⏰ Time's up! ${current.explanation}`
+      );
+
+    }
+
+
+
+    /* =========================================
+       ANSWER
+    ========================================== */
+
+    function answerQuestion(
+      clickedButton,
+      isCorrect,
+      current
+    ) {
+
+      if (answered) return;
+
+      answered = true;
+
+      clearInterval(timerInterval);
+
+
+      const buttons =
+        document.querySelectorAll(".option");
+
+
+      buttons.forEach(
+        button =>
+          button.disabled = true
       );
 
 
-      if (index === current.answer) {
+      if (isCorrect) {
 
         correctAnswers++;
 
-        optionButtons[index]
-          .classList.add("correct");
+        streak++;
+
+        if (streak > bestStreak) {
+
+          bestStreak = streak;
+
+        }
+
+
+        clickedButton.classList.add(
+          "correct"
+        );
+
+
+        showFeedback(
+          `🔥 Correct! ${current.explanation}`
+        );
 
       } else {
 
-        optionButtons[index]
-          .classList.add("wrong");
+        wrongAnswers++;
 
-        optionButtons[current.answer]
-          .classList.add("correct");
+        streak = 0;
+
+
+        clickedButton.classList.add(
+          "wrong"
+        );
+
+
+        buttons.forEach(
+          button => {
+
+            if (
+              button.dataset.correct ===
+              "true"
+            ) {
+
+              button.classList.add(
+                "correct"
+              );
+
+            }
+
+          }
+        );
+
+
+        showFeedback(
+          `Not quite! ${current.explanation}`
+        );
 
       }
 
 
-      const feedback =
-        document.getElementById("feedback");
+      updateStreak();
 
-      feedback.textContent =
-        current.feedback;
-
-      feedback.classList.remove("hidden");
-
-
-      nextBtn.classList.remove("hidden");
+      nextBtn.classList.remove(
+        "hidden"
+      );
 
 
       if (
@@ -1511,7 +2475,7 @@
       ) {
 
         nextBtn.textContent =
-          "Reveal my blog →";
+          "Unlock my blog →";
 
       } else {
 
@@ -1523,9 +2487,34 @@
     }
 
 
-    /* =========================
-       NEXT QUESTION
-    ========================== */
+
+    /* =========================================
+       FEEDBACK
+    ========================================== */
+
+    function showFeedback(text) {
+
+      const feedback =
+        document.getElementById(
+          "feedback"
+        );
+
+
+      feedback.textContent =
+        text;
+
+
+      feedback.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+
+    /* =========================================
+       NEXT
+    ========================================== */
 
     nextBtn.addEventListener(
       "click",
@@ -1533,12 +2522,13 @@
 
         currentQuestion++;
 
+
         if (
           currentQuestion >=
           questions.length
         ) {
 
-          showResult();
+          finishQuiz();
 
         } else {
 
@@ -1550,64 +2540,160 @@
     );
 
 
-    /* =========================
-       RESULT
-    ========================== */
 
-    function showResult() {
+    /* =========================================
+       SKIP
+    ========================================== */
 
-      quiz.classList.add("hidden");
+    skipBtn.addEventListener(
+      "click",
+      () => {
 
-      result.classList.remove("hidden");
+        if (answered) return;
+
+        clearInterval(timerInterval);
+
+        wrongAnswers++;
+
+        streak = 0;
+
+        updateStreak();
+
+
+        currentQuestion++;
+
+
+        if (
+          currentQuestion >=
+          questions.length
+        ) {
+
+          finishQuiz();
+
+        } else {
+
+          showQuestion();
+
+        }
+
+      }
+    );
+
+
+
+    /* =========================================
+       STREAK
+    ========================================== */
+
+    function updateStreak() {
+
+      document.getElementById(
+        "streak"
+      ).textContent =
+        `🔥 ${streak}`;
+
+    }
+
+
+
+    /* =========================================
+       FINISH
+    ========================================== */
+
+    function finishQuiz() {
+
+      clearInterval(timerInterval);
+
+
+      quiz.classList.add(
+        "hidden"
+      );
+
+
+      result.classList.remove(
+        "hidden"
+      );
 
 
       const total =
         questions.length;
 
-      const percentage =
+
+      const accuracy =
         Math.round(
-          (correctAnswers / total) * 100
+          correctAnswers /
+          total *
+          100
         );
+
+
+      const score =
+        correctAnswers * 100;
 
 
       document.getElementById(
         "score"
       ).textContent =
-        correctAnswers * 20;
+        score;
 
 
       document.getElementById(
         "correctStat"
       ).textContent =
-        `${correctAnswers}/${total}`;
+        correctAnswers;
 
 
       document.getElementById(
-        "levelStat"
+        "wrongStat"
       ).textContent =
-        capitalize(selectedLevel);
+        wrongAnswers;
 
 
       document.getElementById(
         "accuracyStat"
       ).textContent =
-        `${percentage}%`;
+        `${accuracy}%`;
 
+
+      document.getElementById(
+        "bestStreakStat"
+      ).textContent =
+        bestStreak;
+
+
+      createResult(
+        accuracy
+      );
+
+    }
+
+
+
+    /* =========================================
+       RESULT + BLOG
+    ========================================== */
+
+    function createResult(
+      accuracy
+    ) {
 
       const title =
         document.getElementById(
           "resultTitle"
         );
 
-      const description =
+
+      const text =
         document.getElementById(
-          "resultDescription"
+          "resultText"
         );
+
 
       const blogTitle =
         document.getElementById(
           "blogTitle"
         );
+
 
       const blogDescription =
         document.getElementById(
@@ -1615,116 +2701,204 @@
         );
 
 
-      if (percentage === 100) {
+      if (accuracy >= 90) {
 
         title.textContent =
-          "Absolutely illegal levels of correctness.";
+          "Your brain just speed-ran that quiz. 🧠⚡";
 
-        description.textContent =
-          "You got everything right. Either your brain is online or you've been secretly reading documentation at 3 a.m.";
+
+        text.textContent =
+          "That was seriously sharp. You answered almost everything correctly, so the blog has unlocked a slightly smug article for you.";
+
 
         blogTitle.textContent =
-          "The Developer Who Reads Error Messages";
+          "The Developer Brain: How to Think Through Problems Instead of Panic-Searching";
+
 
         blogDescription.textContent =
-          "A practical guide to becoming the developer who actually reads the error before deleting the entire project.";
+          "A practical guide to debugging, breaking difficult problems into smaller pieces and knowing when Google is helping versus when Google is becoming your co-worker.";
 
       }
 
-      else if (percentage >= 60) {
+      else if (accuracy >= 70) {
 
         title.textContent =
-          "The bugs fear you... slightly.";
+          "Pretty solid. The bugs are nervous. 👀";
 
-        description.textContent =
-          "Solid run. You clearly know your stuff, with just enough wrong answers to keep the universe suspicious.";
+
+        text.textContent =
+          "You clearly know your way around the basics. A few questions escaped, but nobody saw them leave.";
+
 
         blogTitle.textContent =
-          "7 Tiny Frontend Habits That Make Debugging Easier";
+          "7 Frontend Habits That Make You A Better Developer";
+
 
         blogDescription.textContent =
-          "Small habits that can save you from staring at the same console error for forty-seven minutes.";
+          "Small habits involving HTML, CSS, JavaScript and debugging that can make your development workflow cleaner and less chaotic.";
+
+      }
+
+      else if (accuracy >= 50) {
+
+        title.textContent =
+          "The brain has entered beta testing. 🧪";
+
+
+        text.textContent =
+          "Not bad. You have some strong answers and a few areas worth revisiting. That's literally how learning works.";
+
+
+        blogTitle.textContent =
+          "The Frontend Concepts You Should Actually Understand";
+
+
+        blogDescription.textContent =
+          "A beginner-friendly walkthrough of the HTML, CSS and JavaScript concepts that make everything else easier to understand.";
 
       }
 
       else {
 
         title.textContent =
-          "The compiler has concerns.";
+          "The compiler would like a word. 💀";
 
-        description.textContent =
-          "Some answers escaped you. That's okay. Every wrong answer just revealed another thing worth learning.";
+
+        text.textContent =
+          "Some questions absolutely escaped you. But now you know exactly where to improve, which is more useful than pretending everything is fine.";
+
 
         blogTitle.textContent =
           "Frontend Mistakes Everyone Makes Before They Get Good";
 
+
         blogDescription.textContent =
-          "A beginner-friendly collection of common frontend mistakes and how to stop making them repeatedly.";
+          "A friendly guide to the common HTML, CSS and JavaScript mistakes developers make while learning and how to avoid repeating them.";
 
       }
 
     }
 
 
-    /* =========================
+
+    /* =========================================
        RESTART
-    ========================== */
+    ========================================== */
 
     restartBtn.addEventListener(
       "click",
       () => {
 
-        result.classList.add("hidden");
+        clearInterval(timerInterval);
 
-        setup.classList.remove("hidden");
+        result.classList.add(
+          "hidden"
+        );
+
+        setup.classList.remove(
+          "hidden"
+        );
 
       }
     );
 
 
-    /* =========================
-       BLOG BUTTON
-    ========================== */
+
+    /* =========================================
+       READ BLOG
+    ========================================== */
 
     document
       .getElementById("readBtn")
-      .addEventListener("click", () => {
+      .addEventListener(
+        "click",
+        () => {
 
-        alert(
-          "Blog preview unlocked! 🚀\n\nYou can replace this alert with your actual blog page or article."
-        );
+          alert(
+            "🚀 Article unlocked!\n\nReplace this button with your real blog URL or article page."
+          );
 
-      });
+        }
+      );
 
 
-    /* =========================
-       DARK / LIGHT MODE
-    ========================== */
 
-    themeToggle.addEventListener(
+    /* =========================================
+       THEME TOGGLE
+    ========================================== */
+
+    themeBtn.addEventListener(
       "click",
       () => {
 
-        document.body.classList.toggle("dark");
+        document.body.classList.toggle(
+          "dark"
+        );
+
 
         const dark =
-          document.body.classList.contains("dark");
+          document.body.classList.contains(
+            "dark"
+          );
 
-        themeToggle.textContent =
-          dark ? "☀️" : "🌙";
+
+        themeBtn.textContent =
+          dark
+            ? "☀️"
+            : "🌙";
 
       }
     );
 
 
-    /* =========================
-       HELPER
-    ========================== */
+
+    /* =========================================
+       SHUFFLE
+    ========================================== */
+
+    function shuffle(array) {
+
+      for (
+        let i = array.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() *
+            (i + 1)
+          );
+
+
+        [
+          array[i],
+          array[j]
+        ] =
+        [
+          array[j],
+          array[i]
+        ];
+
+      }
+
+
+      return array;
+
+    }
+
+
+
+    /* =========================================
+       CAPITALIZE
+    ========================================== */
 
     function capitalize(text) {
 
-      return text.charAt(0).toUpperCase()
-        + text.slice(1);
+      return (
+        text.charAt(0).toUpperCase() +
+        text.slice(1)
+      );
 
     }
 
