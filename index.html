@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Quiz & Blog Preview</title>
+
+  <style>
+    /* =========================
+       ROOT
+    ========================= */
+
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #171821;
+      --muted: #777b89;
+      --border: #e7e8ef;
+
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-light: #eeedff;
+
+      --success: #16a34a;
+      --success-bg: #ecfdf3;
+
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+
+      --shadow:
+        0 20px 50px rgba(25, 25, 50, 0.08);
+    }
+
+    /* DARK THEME */
+
+    body.dark {
+      --bg: #0f1015;
+      --card: #181920;
+      --text: #f5f5f7;
+      --muted: #999daa;
+      --border: #292b35;
+
+      --primary: #7770ff;
+      --primary-dark: #665ef0;
+      --primary-light: #242342;
+
+      --success-bg: #12251a;
+      --danger-bg: #2a1517;
+
+      --shadow:
+        0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+
+    /* =========================
+       RESET
+    ========================= */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+
+      transition:
+        background 0.3s ease,
+        color 0.3s ease;
+
+      padding: 40px 20px;
+    }
+
+    button {
+      font: inherit;
+    }
+
+
+    /* =========================
+       APP
+    ========================= */
+
+    .app {
+      width: min(900px, 100%);
+      margin: auto;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+
+      background: var(--primary);
+      color: white;
+
+      font-size: 18px;
+    }
+
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+
+      border: 1px solid var(--border);
+      border-radius: 50%;
+
+      background: var(--card);
+      color: var(--text);
+
+      cursor: pointer;
+
+      display: grid;
+      place-items: center;
+
+      transition: 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(10deg);
+      border-color: var(--primary);
+    }
+
+
+    /* =========================
+       MAIN CARD
+    ========================= */
+
+    .card {
+      background: var(--card);
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      padding: 36px;
+
+      box-shadow: var(--shadow);
+
+      transition:
+        background 0.3s ease,
+        border 0.3s ease;
+    }
+
+
+    /* =========================
+       SETUP
+    ========================= */
+
+    .intro {
+      text-align: center;
+      max-width: 650px;
+      margin: auto;
+    }
+
+    .eyebrow {
+      color: var(--primary);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+
+      margin-bottom: 12px;
+    }
+
+    .intro h1 {
+      font-size: clamp(32px, 6vw, 54px);
+      line-height: 1;
+
+      letter-spacing: -2.5px;
+
+      margin-bottom: 16px;
+    }
+
+    .intro p {
+      color: var(--muted);
+
+      max-width: 520px;
+
+      margin: auto;
+
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+
+    /* =========================
+       DIFFICULTY
+    ========================= */
+
+    .difficulty {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 12px;
+
+      margin: 30px 0 20px;
+    }
+
+    .difficulty-btn {
+      padding: 18px 12px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+
+      background: var(--card);
+      color: var(--text);
+
+      cursor: pointer;
+
+      text-align: left;
+
+      transition: 0.2s ease;
+    }
+
+    .difficulty-btn:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .difficulty-btn.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    .difficulty-btn strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .difficulty-btn span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .primary-btn {
+      width: 100%;
+
+      border: none;
+      border-radius: var(--radius-sm);
+
+      background: var(--primary);
+      color: white;
+
+      padding: 15px 20px;
+
+      font-weight: 750;
+      font-size: 14px;
+
+      cursor: pointer;
+
+      transition: 0.2s ease;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+
+    /* =========================
+       QUIZ
+    ========================= */
+
+    .quiz-top {
+      margin-bottom: 30px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      margin-bottom: 9px;
+    }
+
+    .progress {
+      height: 7px;
+
+      background: var(--border);
+
+      border-radius: 20px;
+
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+
+      width: 0%;
+
+      background: var(--primary);
+
+      border-radius: inherit;
+
+      transition: width 0.4s ease;
+    }
+
+    .question-number {
+      color: var(--primary);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+
+      margin-bottom: 10px;
+    }
+
+    .question {
+      font-size: clamp(22px, 4vw, 30px);
+
+      line-height: 1.25;
+
+      letter-spacing: -1px;
+
+      margin-bottom: 24px;
+    }
+
+
+    /* =========================
+       OPTIONS
+    ========================= */
+
+    .options {
+      display: grid;
+      gap: 11px;
+    }
+
+    .option {
+      width: 100%;
+
+      padding: 16px;
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+
+      background: var(--card);
+      color: var(--text);
+
+      text-align: left;
+
+      cursor: pointer;
+
+      transition: 0.18s ease;
+    }
+
+    .option:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .option.correct {
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+
+    .option.wrong {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+    }
+
+    .option:disabled {
+      cursor: default;
+    }
+
+
+    /* =========================
+       FEEDBACK
+    ========================= */
+
+    .feedback {
+      margin-top: 16px;
+
+      padding: 14px;
+
+      border-radius: var(--radius-sm);
+
+      background: var(--primary-light);
+
+      color: var(--text);
+
+      font-size: 13px;
+
+      line-height: 1.6;
+    }
+
+    .next-btn {
+      margin-top: 14px;
+    }
+
+
+    /* =========================
+       RESULT
+    ========================= */
+
+    .result {
+      text-align: center;
+    }
+
+    .score-circle {
+      width: 130px;
+      height: 130px;
+
+      margin: 5px auto 22px;
+
+      border-radius: 50%;
+
+      background: var(--primary);
+
+      color: white;
+
+      display: flex;
+      flex-direction: column;
+
+      justify-content: center;
+      align-items: center;
+
+      box-shadow:
+        0 15px 35px rgba(79, 70, 229, 0.25);
+    }
+
+    .score {
+      font-size: 38px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .score-label {
+      font-size: 10px;
+      opacity: 0.8;
+
+      margin-top: 5px;
+    }
+
+    .result h2 {
+      font-size: 30px;
+
+      letter-spacing: -1px;
+
+      margin-bottom: 8px;
+    }
+
+    .result-description {
+      color: var(--muted);
+
+      max-width: 520px;
+
+      margin: auto;
+
+      line-height: 1.7;
+
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 10px;
+
+      margin: 25px 0;
+    }
+
+    .stat {
+      padding: 15px;
+
+      background: var(--bg);
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius-sm);
+    }
+
+    .stat strong {
+      display: block;
+
+      font-size: 19px;
+
+      margin-bottom: 3px;
+    }
+
+    .stat span {
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+
+    /* =========================
+       BLOG PREVIEW
+    ========================= */
+
+    .blog {
+      text-align: left;
+
+      border: 1px solid var(--border);
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      margin-top: 24px;
+
+      background: var(--card);
+    }
+
+    .blog-image {
+      min-height: 200px;
+
+      padding: 24px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      color: white;
+
+      background:
+        radial-gradient(
+          circle at 20% 20%,
+          #7770ff,
+          transparent 30%
+        ),
+        linear-gradient(
+          135deg,
+          #181820,
+          #393477
+        );
+    }
+
+    .blog-label {
+      font-size: 10px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.12em;
+
+      opacity: 0.75;
+
+      font-weight: 800;
+    }
+
+    .blog-image h3 {
+      font-size: clamp(25px, 5vw, 34px);
+
+      max-width: 600px;
+
+      line-height: 1.05;
+
+      letter-spacing: -1.5px;
+    }
+
+    .blog-content {
+      padding: 22px;
+    }
+
+    .blog-meta {
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-bottom: 10px;
+    }
+
+    .blog-content p {
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.7;
+    }
+
+    .blog-actions {
+      display: flex;
+      gap: 10px;
+
+      margin-top: 18px;
+    }
+
+    .secondary-btn {
+      flex: 1;
+
+      padding: 13px;
+
+      border-radius: var(--radius-sm);
+
+      border: 1px solid var(--border);
+
+      background: var(--card);
+      color: var(--text);
+
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .secondary-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .blog-actions .primary-btn {
+      flex: 1;
+    }
+
+
+    /* =========================
+       UTILITIES
+    ========================= */
+
+    .hidden {
+      display: none;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 20px 12px;
+      }
+
+      .card {
+        padding: 22px;
+      }
+
+      .difficulty {
+        grid-template-columns: 1fr;
+      }
+
+      .difficulty-btn {
+        padding: 14px;
+      }
+
+      .stats {
+        gap: 7px;
+      }
+
+      .stat {
+        padding: 12px 7px;
+      }
+
+      .blog-actions {
+        flex-direction: column;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <!-- HEADER -->
+    <header class="header">
+
+      <div class="logo">
+        <div class="logo-icon">Q</div>
+        QuizBlog
+      </div>
+
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="Toggle dark mode"
+      >
+        🌙
+      </button>
+
+    </header>
+
+
+    <!-- =========================
+         SETUP
+    ========================== -->
+
+    <section class="card" id="setup">
+
+      <div class="intro">
+
+        <div class="eyebrow">
+          Brain buffet
+        </div>
+
+        <h1>
+          Take the quiz.<br>
+          Unlock the blog.
+        </h1>
+
+        <p>
+          Answer increasingly suspicious questions,
+          collect points, and unlock a blog preview
+          based on your performance.
+        </p>
+
+      </div>
+
+
+      <div class="difficulty">
+
+        <button
+          class="difficulty-btn active"
+          data-level="easy"
+        >
+          <strong>Easy 😌</strong>
+          <span>Warm-up mode</span>
+        </button>
+
+        <button
+          class="difficulty-btn"
+          data-level="medium"
+        >
+          <strong>Medium 🧠</strong>
+          <span>Brain mildly cooked</span>
+        </button>
+
+        <button
+          class="difficulty-btn"
+          data-level="hard"
+        >
+          <strong>Hard 💀</strong>
+          <span>Regret included</span>
+        </button>
+
+      </div>
+
+
+      <button
+        class="primary-btn"
+        id="startBtn"
+      >
+        Start the quiz →
+      </button>
+
+    </section>
+
+
+    <!-- =========================
+         QUIZ
+    ========================== -->
+
+    <section
+      class="card hidden"
+      id="quiz"
+    >
+
+      <div class="quiz-top">
+
+        <div class="progress-info">
+
+          <span id="questionCounter">
+            Question 1 of 5
+          </span>
+
+          <span id="percentage">
+            20%
+          </span>
+
+        </div>
+
+        <div class="progress">
+          <div
+            class="progress-bar"
+            id="progressBar"
+          ></div>
+        </div>
+
+      </div>
+
+
+      <div
+        class="question-number"
+        id="difficultyLabel"
+      >
+        Easy mode
+      </div>
+
+
+      <h2
+        class="question"
+        id="question"
+      ></h2>
+
+
+      <div
+        class="options"
+        id="options"
+      ></div>
+
+
+      <div
+        class="feedback hidden"
+        id="feedback"
+      ></div>
+
+
+      <button
+        class="primary-btn next-btn hidden"
+        id="nextBtn"
+      >
+        Next question →
+      </button>
+
+    </section>
+
+
+    <!-- =========================
+         RESULT
+    ========================== -->
+
+    <section
+      class="card result hidden"
+      id="result"
+    >
+
+      <div class="eyebrow">
+        Quiz complete
+      </div>
+
+
+      <div class="score-circle">
+
+        <span
+          class="score"
+          id="score"
+        >
+          0
+        </span>
+
+        <span class="score-label">
+          POINTS
+        </span>
+
+      </div>
+
+
+      <h2 id="resultTitle">
+        You survived.
+      </h2>
+
+
+      <p
+        class="result-description"
+        id="resultDescription"
+      ></p>
+
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong id="correctStat">
+            0/5
+          </strong>
+          <span>Correct</span>
+        </div>
+
+        <div class="stat">
+          <strong id="levelStat">
+            Easy
+          </strong>
+          <span>Difficulty</span>
+        </div>
+
+        <div class="stat">
+          <strong id="accuracyStat">
+            0%
+          </strong>
+          <span>Accuracy</span>
+        </div>
+
+      </div>
+
+
+      <!-- BLOG PREVIEW -->
+
+      <article class="blog">
+
+        <div class="blog-image">
+
+          <span class="blog-label">
+            Blog preview · Unlocked
+          </span>
+
+          <h3 id="blogTitle">
+            Your result has something to say.
+          </h3>
+
+        </div>
+
+
+        <div class="blog-content">
+
+          <div class="blog-meta">
+            THE BYTE · 4 MIN READ
+          </div>
+
+          <p id="blogDescription">
+            A quick preview of your personalized article.
+          </p>
+
+
+          <div class="blog-actions">
+
+            <button
+              class="secondary-btn"
+              id="restartBtn"
+            >
+              Try again
+            </button>
+
+            <button
+              class="primary-btn"
+              id="readBtn"
+            >
+              Read preview
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    /* =========================
+       QUIZ DATA
+    ========================== */
+
+    const quizData = {
+
+      easy: [
+
+        {
+          question:
+            "Which HTML tag is normally used for the biggest heading?",
+
+          options: [
+            "<h1>",
+            "<p>",
+            "<big>",
+            "<header>"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "The heading hierarchy starts with h1. Your HTML just breathed a sigh of relief."
+        },
+
+        {
+          question:
+            "Your CSS refuses to work. What should you probably check first?",
+
+          options: [
+            "The selector and browser DevTools",
+            "Yell at the laptop",
+            "Delete the internet",
+            "Rename the CSS file"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "DevTools can quickly show whether your CSS rule is matching or being overridden."
+        },
+
+        {
+          question:
+            "Which one is a JavaScript data type?",
+
+          options: [
+            "String",
+            "Website",
+            "Pixel",
+            "Button"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "String is a JavaScript primitive data type. Pixels are innocent bystanders."
+        },
+
+        {
+          question:
+            "What does CSS mainly control?",
+
+          options: [
+            "Presentation and layout",
+            "Server electricity",
+            "Database passwords",
+            "Wi-Fi speed"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "CSS controls the presentation, styling and layout of a webpage."
+        },
+
+        {
+          question:
+            "What does type=\"button\" do inside a form?",
+
+          options: [
+            "It does not submit the form",
+            "It deletes the form",
+            "It reloads the server",
+            "It submits twice"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "A button with type=\"button\" does not trigger the form's submit action."
+        }
+
+      ],
+
+
+      medium: [
+
+        {
+          question:
+            "What does display: flex mainly create?",
+
+          options: [
+            "A flex formatting context",
+            "A database connection",
+            "A JavaScript loop",
+            "A new HTML document"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "Flexbox creates a layout context designed for arranging elements along axes."
+        },
+
+        {
+          question:
+            "What does event bubbling mean in the DOM?",
+
+          options: [
+            "An event can propagate from a target toward ancestors",
+            "Events repeat forever",
+            "A webpage expands",
+            "CSS events become JavaScript"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "After an event happens on a target, it can propagate upward through ancestor elements."
+        },
+
+        {
+          question:
+            "Which CSS property controls space between content and its border?",
+
+          options: [
+            "padding",
+            "margin",
+            "gap",
+            "outline"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "Padding is the space between an element's content and its border."
+        },
+
+        {
+          question:
+            "What does Array.prototype.map() return?",
+
+          options: [
+            "A new array",
+            "A single number",
+            "An HTML document",
+            "A CSS stylesheet"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "map() creates and returns a new array containing the callback results."
+        },
+
+        {
+          question:
+            "Why is semantic HTML useful?",
+
+          options: [
+            "It communicates structure and meaning",
+            "It makes every page instant",
+            "It replaces JavaScript",
+            "It guarantees perfect SEO"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "Semantic HTML communicates the role and structure of content to browsers and assistive technologies."
+        }
+
+      ],
+
+
+      hard: [
+
+        {
+          question:
+            "In CSS Grid, what does minmax(200px, 1fr) describe?",
+
+          options: [
+            "A track with a 200px minimum and flexible maximum",
+            "Exactly 200px of fixed width",
+            "A track that can never shrink",
+            "Two separate grid columns"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "minmax() defines a minimum and maximum track size. 1fr allows flexible growth."
+        },
+
+        {
+          question:
+            "Why can a JavaScript closure access a variable after the outer function returns?",
+
+          options: [
+            "It retains access to its lexical environment",
+            "JavaScript makes every variable global",
+            "Browsers store every variable forever",
+            "The variable becomes CSS"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "A closure retains access to bindings from its lexical environment."
+        },
+
+        {
+          question:
+            "What is the key difference between == and === in JavaScript?",
+
+          options: [
+            "=== does not perform type coercion",
+            "== always compares objects by reference",
+            "=== converts strings to numbers first",
+            "They are identical"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "Strict equality with === compares without the type coercion used by loose equality."
+        },
+
+        {
+          question:
+            "What does the CSS cascade help determine?",
+
+          options: [
+            "Which applicable declaration wins",
+            "How fast JavaScript runs",
+            "Which HTML opens first",
+            "How many images are stored"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "The cascade resolves competing CSS declarations using factors such as specificity and order."
+        },
+
+        {
+          question:
+            "Why can an index be problematic as a React list key when items are reordered?",
+
+          options: [
+            "Component identity can follow positions instead of items",
+            "Indexes always crash React",
+            "React cannot render arrays",
+            "Keys only work with strings"
+          ],
+
+          answer: 0,
+
+          feedback:
+            "Position-based keys can make React associate component state with the wrong item after reordering."
+        }
+
+      ]
+
+    };
+
+
+    /* =========================
+       STATE
+    ========================== */
+
+    let selectedLevel = "easy";
+
+    let questions = [];
+
+    let currentQuestion = 0;
+
+    let correctAnswers = 0;
+
+    let answered = false;
+
+
+    /* =========================
+       ELEMENTS
+    ========================== */
+
+    const setup =
+      document.getElementById("setup");
+
+    const quiz =
+      document.getElementById("quiz");
+
+    const result =
+      document.getElementById("result");
+
+    const startBtn =
+      document.getElementById("startBtn");
+
+    const nextBtn =
+      document.getElementById("nextBtn");
+
+    const restartBtn =
+      document.getElementById("restartBtn");
+
+    const themeToggle =
+      document.getElementById("themeToggle");
+
+
+    /* =========================
+       DIFFICULTY
+    ========================== */
+
+    document
+      .querySelectorAll(".difficulty-btn")
+      .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+          document
+            .querySelectorAll(".difficulty-btn")
+            .forEach(btn =>
+              btn.classList.remove("active")
+            );
+
+          button.classList.add("active");
+
+          selectedLevel =
+            button.dataset.level;
+
+        });
+
+      });
+
+
+    /* =========================
+       START QUIZ
+    ========================== */
+
+    startBtn.addEventListener("click", () => {
+
+      questions =
+        quizData[selectedLevel];
+
+      currentQuestion = 0;
+
+      correctAnswers = 0;
+
+      setup.classList.add("hidden");
+
+      result.classList.add("hidden");
+
+      quiz.classList.remove("hidden");
+
+      showQuestion();
+
+    });
+
+
+    /* =========================
+       SHOW QUESTION
+    ========================== */
+
+    function showQuestion() {
+
+      answered = false;
+
+      const current =
+        questions[currentQuestion];
+
+      const total =
+        questions.length;
+
+      const questionNumber =
+        currentQuestion + 1;
+
+      const percentage =
+        Math.round(
+          (questionNumber / total) * 100
+        );
+
+
+      document.getElementById(
+        "questionCounter"
+      ).textContent =
+        `Question ${questionNumber} of ${total}`;
+
+
+      document.getElementById(
+        "percentage"
+      ).textContent =
+        `${percentage}%`;
+
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
+        `${percentage}%`;
+
+
+      document.getElementById(
+        "difficultyLabel"
+      ).textContent =
+        `${capitalize(selectedLevel)} mode`;
+
+
+      document.getElementById(
+        "question"
+      ).textContent =
+        current.question;
+
+
+      const options =
+        document.getElementById("options");
+
+      options.innerHTML = "";
+
+
+      current.options.forEach(
+        (option, index) => {
+
+          const button =
+            document.createElement("button");
+
+          button.className =
+            "option";
+
+          button.textContent =
+            option;
+
+          button.type =
+            "button";
+
+          button.addEventListener(
+            "click",
+            () => selectAnswer(index)
+          );
+
+          options.appendChild(button);
+
+        }
+      );
+
+
+      document
+        .getElementById("feedback")
+        .classList.add("hidden");
+
+
+      nextBtn.classList.add("hidden");
+
+    }
+
+
+    /* =========================
+       SELECT ANSWER
+    ========================== */
+
+    function selectAnswer(index) {
+
+      if (answered) return;
+
+      answered = true;
+
+      const current =
+        questions[currentQuestion];
+
+      const optionButtons =
+        document.querySelectorAll(".option");
+
+
+      optionButtons.forEach(
+        button => button.disabled = true
+      );
+
+
+      if (index === current.answer) {
+
+        correctAnswers++;
+
+        optionButtons[index]
+          .classList.add("correct");
+
+      } else {
+
+        optionButtons[index]
+          .classList.add("wrong");
+
+        optionButtons[current.answer]
+          .classList.add("correct");
+
+      }
+
+
+      const feedback =
+        document.getElementById("feedback");
+
+      feedback.textContent =
+        current.feedback;
+
+      feedback.classList.remove("hidden");
+
+
+      nextBtn.classList.remove("hidden");
+
+
+      if (
+        currentQuestion ===
+        questions.length - 1
+      ) {
+
+        nextBtn.textContent =
+          "Reveal my blog →";
+
+      } else {
+
+        nextBtn.textContent =
+          "Next question →";
+
+      }
+
+    }
+
+
+    /* =========================
+       NEXT QUESTION
+    ========================== */
+
+    nextBtn.addEventListener(
+      "click",
+      () => {
+
+        currentQuestion++;
+
+        if (
+          currentQuestion >=
+          questions.length
+        ) {
+
+          showResult();
+
+        } else {
+
+          showQuestion();
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       RESULT
+    ========================== */
+
+    function showResult() {
+
+      quiz.classList.add("hidden");
+
+      result.classList.remove("hidden");
+
+
+      const total =
+        questions.length;
+
+      const percentage =
+        Math.round(
+          (correctAnswers / total) * 100
+        );
+
+
+      document.getElementById(
+        "score"
+      ).textContent =
+        correctAnswers * 20;
+
+
+      document.getElementById(
+        "correctStat"
+      ).textContent =
+        `${correctAnswers}/${total}`;
+
+
+      document.getElementById(
+        "levelStat"
+      ).textContent =
+        capitalize(selectedLevel);
+
+
+      document.getElementById(
+        "accuracyStat"
+      ).textContent =
+        `${percentage}%`;
+
+
+      const title =
+        document.getElementById(
+          "resultTitle"
+        );
+
+      const description =
+        document.getElementById(
+          "resultDescription"
+        );
+
+      const blogTitle =
+        document.getElementById(
+          "blogTitle"
+        );
+
+      const blogDescription =
+        document.getElementById(
+          "blogDescription"
+        );
+
+
+      if (percentage === 100) {
+
+        title.textContent =
+          "Absolutely illegal levels of correctness.";
+
+        description.textContent =
+          "You got everything right. Either your brain is online or you've been secretly reading documentation at 3 a.m.";
+
+        blogTitle.textContent =
+          "The Developer Who Reads Error Messages";
+
+        blogDescription.textContent =
+          "A practical guide to becoming the developer who actually reads the error before deleting the entire project.";
+
+      }
+
+      else if (percentage >= 60) {
+
+        title.textContent =
+          "The bugs fear you... slightly.";
+
+        description.textContent =
+          "Solid run. You clearly know your stuff, with just enough wrong answers to keep the universe suspicious.";
+
+        blogTitle.textContent =
+          "7 Tiny Frontend Habits That Make Debugging Easier";
+
+        blogDescription.textContent =
+          "Small habits that can save you from staring at the same console error for forty-seven minutes.";
+
+      }
+
+      else {
+
+        title.textContent =
+          "The compiler has concerns.";
+
+        description.textContent =
+          "Some answers escaped you. That's okay. Every wrong answer just revealed another thing worth learning.";
+
+        blogTitle.textContent =
+          "Frontend Mistakes Everyone Makes Before They Get Good";
+
+        blogDescription.textContent =
+          "A beginner-friendly collection of common frontend mistakes and how to stop making them repeatedly.";
+
+      }
+
+    }
+
+
+    /* =========================
+       RESTART
+    ========================== */
+
+    restartBtn.addEventListener(
+      "click",
+      () => {
+
+        result.classList.add("hidden");
+
+        setup.classList.remove("hidden");
+
+      }
+    );
+
+
+    /* =========================
+       BLOG BUTTON
+    ========================== */
+
+    document
+      .getElementById("readBtn")
+      .addEventListener("click", () => {
+
+        alert(
+          "Blog preview unlocked! 🚀\n\nYou can replace this alert with your actual blog page or article."
+        );
+
+      });
+
+
+    /* =========================
+       DARK / LIGHT MODE
+    ========================== */
+
+    themeToggle.addEventListener(
+      "click",
+      () => {
+
+        document.body.classList.toggle("dark");
+
+        const dark =
+          document.body.classList.contains("dark");
+
+        themeToggle.textContent =
+          dark ? "☀️" : "🌙";
+
+      }
+    );
+
+
+    /* =========================
+       HELPER
+    ========================== */
+
+    function capitalize(text) {
+
+      return text.charAt(0).toUpperCase()
+        + text.slice(1);
+
+    }
+
+  </script>
+
+</body>
+</html>
